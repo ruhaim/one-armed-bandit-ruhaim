@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { generateSlotState, SlotState } from '../utils/slot-utils';
+import {
+  generateSlotState,
+  generateSlotStateWithResult,
+  SlotStateWithResult,
+} from '../utils/slot-utils';
 import SlotResult from './SlotResult';
 
 export default function SlotMachine(): React.ReactElement {
-  const [slotState, setSlotState] = React.useState<SlotState>(
-    generateSlotState()
+  const [slotState, setSlotState] = React.useState<SlotStateWithResult>(
+    generateSlotStateWithResult()
   );
 
   return (
@@ -12,7 +16,7 @@ export default function SlotMachine(): React.ReactElement {
       <SlotResult state={slotState} />
       <button
         onClick={() => {
-          setSlotState(generateSlotState());
+          setSlotState(generateSlotStateWithResult());
         }}
       >
         Generate Random Slot State{' '}

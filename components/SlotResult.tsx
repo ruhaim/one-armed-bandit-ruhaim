@@ -1,22 +1,35 @@
 import * as React from 'react';
-import { SlotState } from '../utils/slot-utils';
+import { SlotStateWithResult } from '../utils/slot-utils';
 
 interface SlotResultProps {
-  state: SlotState;
+  state: SlotStateWithResult;
 }
 
 export default function SlotResult({
-  state,
-}: SlotResultProps): React.ReactElement {
+  state: { slotState, winState },
+}: SlotResultProps) {
   return (
-    <div>
-      {state?.map((row) => (
-        <div>
-          {row.map((col) => (
-            <span>{col}</span>
-          ))}
-        </div>
-      ))}
+    <div className="slotResult" data-is-win={winState.isWin}>
+      {slotState.map((row, rowIdx) => {
+        const { isWin: isRowWin, sequenceLength } =
+          winState.rowWinState[rowIdx];
+        return (
+          <div className={`slotRow`} data-is-win={isRowWin}>
+            {row.map((col, colIdx) => {
+              const isColWin = isRowWin && colIdx < sequenceLength;
+              return (
+                <span
+                  className={`slotCol`}
+                  data-is-win={isColWin}
+                  style={{ color: isColWin ? 'red' : 'inherit' }}
+                >
+                  {col}
+                </span>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 }
