@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SlotStateWithResult } from '../utils/slot-utils';
+import CurrencyDisplay from './CurrencyDisplay';
 
 interface SlotResultProps {
   state: SlotStateWithResult;
@@ -8,9 +9,6 @@ interface SlotResultProps {
 export default function SlotResult({
   state: { slotState, winState },
 }: SlotResultProps) {
-  const currencyFormatter = React.useRef(
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
-  );
   return (
     <div className="slot-result" data-is-win={winState.isWin}>
       {slotState.map((row, rowIdx) => {
@@ -30,7 +28,9 @@ export default function SlotResult({
         );
       })}
 
-      <div>You Won: {currencyFormatter.current.format(winState.winAmount)}</div>
+      <div>
+        You Won: <CurrencyDisplay value={winState.winAmount} />
+      </div>
     </div>
   );
 }
