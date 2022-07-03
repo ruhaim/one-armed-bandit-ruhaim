@@ -8,21 +8,20 @@ interface SlotResultProps {
 export default function SlotResult({
   state: { slotState, winState },
 }: SlotResultProps) {
+  const currencyFormatter = React.useRef(
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+  );
   return (
-    <div className="slotResult" data-is-win={winState.isWin}>
+    <div className="slot-result" data-is-win={winState.isWin}>
       {slotState.map((row, rowIdx) => {
         const { isWin: isRowWin, sequenceLength } =
           winState.rowWinState[rowIdx];
         return (
-          <div className={`slotRow`} data-is-win={isRowWin}>
+          <div className={'slot-result--row'} data-is-win={isRowWin}>
             {row.map((col, colIdx) => {
               const isColWin = isRowWin && colIdx < sequenceLength;
               return (
-                <span
-                  className={`slotCol`}
-                  data-is-win={isColWin}
-                  style={{ color: isColWin ? 'red' : 'inherit' }}
-                >
+                <span className={'slot-result--col'} data-is-win={isColWin}>
                   {col}
                 </span>
               );
@@ -30,6 +29,8 @@ export default function SlotResult({
           </div>
         );
       })}
+
+      <div>You Won: {currencyFormatter.current.format(winState.winAmount)}</div>
     </div>
   );
 }
