@@ -1,29 +1,45 @@
 import * as React from 'react';
 import {
   generateSlotState,
-  generateSlotStateWithResult,
-  SlotStateWithResult,
+  getSlotWinState,
+  SlotState,
+  SlotWinState,
 } from '../utils/slot-utils';
+import {
+  slotRowAmountWinStrategy1,
+  slotRowAmountWinStrategy2,
+} from '../utils/win-calc-strategies';
 import SlotResult from './SlotResult';
 
+const calcStrategies = [slotRowAmountWinStrategy1, slotRowAmountWinStrategy2];
+
 export default function SlotMachine(): React.ReactElement {
-  const [slotState, setSlotState] = React.useState<SlotStateWithResult>(
-    generateSlotStateWithResult()
+  const [slotState, setSlotState] = React.useState<SlotState>(
+    generateSlotState()
+  );
+
+  const [slotWinStates, setSlotWinStates] = React.useState<SlotWinState[]>(
+    calcStrategies.map((strategy) => getSlotWinState(slotState, strategy))
   );
   const [numAttempts, setNumAttempts] = React.useState(0);
-  const [winAmountSum, setWinAmountSum] = React.useState(0);
+  const [winAmountSums, setWinAmountSums] = React.useState<number[]>(
+    calcStrategies.map(() => 0)
+  );
 
   React.useEffect(() => {
-    setWinAmountSum((sum) => {
-      return sum + slotState.winState.winAmount;
+    setSlotWinStates(
+      calcStrategies.map((strategy) => getSlotWinState(slotState, strategy))
+    );
+    setWinAmountSums((sums) => {
+      return sums.map((sum, idx) => sum + slotWinStates[idx].winAmount);
     });
   }, [slotState]);
   return (
     <React.Fragment>
-      <SlotResult state={slotState} />
+      <SlotResult slotState={slotState} winState={slotWinStates[0]} />
       <button
         onClick={() => {
-          setSlotState(generateSlotStateWithResult());
+          setSlotState(generateSlotState());
           setNumAttempts((num) => num + 1);
         }}
       >
@@ -32,7 +48,7 @@ export default function SlotMachine(): React.ReactElement {
       <button
         onClick={() => {
           setNumAttempts(0);
-          setWinAmountSum(0);
+          setWinAmountSums(calcStrategies.map(() => 0));
         }}
       >
         Reset
@@ -40,9 +56,9 @@ export default function SlotMachine(): React.ReactElement {
       <div>
         Stats
         <div>Attempts: {numAttempts}</div>
-        <div>Total Won: {winAmountSum}</div>
+        <div>Total Won: {winAmountSums}</div>
         <div>Total Cost: {numAttempts}</div>
-        <div>Total Profit: {winAmountSum - numAttempts}</div>
+        <div>Total Profit: {0 - numAttempts}</div>
       </div>
     </React.Fragment>
   );

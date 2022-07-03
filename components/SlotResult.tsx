@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { SlotStateWithResult } from '../utils/slot-utils';
+import { SlotWinState, SlotState } from '../utils/slot-utils';
 import CurrencyDisplay from './CurrencyDisplay';
 
 interface SlotResultProps {
-  state: SlotStateWithResult;
+  slotState: SlotState;
+  winState: SlotWinState;
 }
 
-export default function SlotResult({
-  state: { slotState, winState },
-}: SlotResultProps) {
+export default function SlotResult({ slotState, winState }: SlotResultProps) {
   return (
     <div className="slot-result" data-is-win={winState.isWin}>
       {slotState.map((row, rowIdx) => {

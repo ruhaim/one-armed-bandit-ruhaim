@@ -3,10 +3,6 @@ import SlotResult from '../components/SlotResult';
 export type SlotState = SlotRowState[];
 export type SlotRowState = number[];
 
-export interface SlotStateWithResult {
-  winState: SlotWinState;
-  slotState: SlotState;
-}
 export interface SlotWinState {
   isWin: boolean;
   rowWinState: SlotRowWinState[];
@@ -19,13 +15,7 @@ export interface SlotRowWinState {
   winAmount: number;
 }
 
-export function generateSlotStateWithResult(): SlotStateWithResult {
-  const slotState = generateSlotState();
-  return {
-    slotState,
-    winState: getSlotWinState(slotState),
-  };
-}
+export type WinCalcStrategy = (sequenceLength, winningNum) => number;
 
 export function generateSlotState(): SlotState {
   const numRows = 3;
@@ -40,12 +30,15 @@ export function getRandomSlot(): number {
   return Math.floor(Math.random() * 5);
 }
 
-export function getSlotWinState(state: SlotState): SlotWinState {
+export function getSlotWinState(
+  state: SlotState,
+  winStrategy: WinCalcStrategy
+): SlotWinState {
   const rowWinState: SlotRowWinState[] = [];
   let winAmount = 0;
   let isWin = false;
   state.forEach((rowState) => {
-    const winState = getSlotRowWinState(rowState);
+    const winState = getSlotRowWinState(rowState, winStrategy);
     winAmount += winState.winAmount;
     isWin = isWin ? true : winState.isWin;
     rowWinState.push(winState);
@@ -53,7 +46,10 @@ export function getSlotWinState(state: SlotState): SlotWinState {
   return { rowWinState, winAmount, isWin };
 }
 
-function getSlotRowWinState(rowState: SlotRowState): SlotRowWinState {
+function getSlotRowWinState(
+  rowState: SlotRowState,
+  winStrategy: WinCalcStrategy
+): SlotRowWinState {
   let sequenceLength = 1;
   const winningNum = rowState[0];
   rowState.some((val, idx, arr) => {
@@ -64,13 +60,7 @@ function getSlotRowWinState(rowState: SlotRowState): SlotRowWinState {
     sequenceLength++;
   });
   const isWin = sequenceLength >= 3;
-  const winAmount = !isWin
-    ? 0
-    : calcSlotRowWinAmount(sequenceLength, winningNum);
+  const winAmount = !isWin ? 0 : winStrategy(sequenceLength, winningNum);
 
   return { sequenceLength, winningNum, isWin, winAmount };
-}
-
-function calcSlotRowWinAmount(sequenceLength, winningNum): number {
-  return sequenceLength * (winningNum + 0.5);
 }
