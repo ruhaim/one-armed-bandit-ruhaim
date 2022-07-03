@@ -1,15 +1,12 @@
 import * as React from 'react';
 import SlotMachine from './components/SlotMachine';
 import './style.css';
-import { generateSlotState } from './utils/slot-utils';
 
 export default function App() {
   return (
     <div>
-      <h1>Hello StackBlitz!</h1>
-      <div>{generateSlotState()}</div>
+      <h1>Welcome to One Armed Bandit</h1>
       <SlotMachine />
-      <p>Start editing to see some magic happen :)</p>
     </div>
   );
 }
