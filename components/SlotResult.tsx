@@ -9,16 +9,24 @@ interface SlotResultProps {
 
 export default function SlotResult({ slotState, winState }: SlotResultProps) {
   return (
-    <div className="slot-result" data-is-win={winState.isWin}>
+    <div className="slot-result" data-is-win={winState?.isWin}>
       {slotState.map((row, rowIdx) => {
-        const { isWin: isRowWin, sequenceLength } =
-          winState.rowWinState[rowIdx];
+        const { isWin: isRowWin = false, sequenceLength = 0 } =
+          winState?.rowWinState[rowIdx] ?? {};
         return (
-          <div className={'slot-result--row'} data-is-win={isRowWin}>
+          <div
+            className={'slot-result--row'}
+            data-is-win={isRowWin}
+            key={rowIdx}
+          >
             {row.map((col, colIdx) => {
               const isColWin = isRowWin && colIdx < sequenceLength;
               return (
-                <span className={'slot-result--col'} data-is-win={isColWin}>
+                <span
+                  key={colIdx}
+                  className={'slot-result--col'}
+                  data-is-win={isColWin}
+                >
                   {col}
                 </span>
               );

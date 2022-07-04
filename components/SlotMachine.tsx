@@ -12,25 +12,24 @@ const playSessions = [
   new PlaySession(slotRowAmountWinStrategy2),
 ];
 
-export default function SlotMachine(): React.ReactElement {
-  const [slotState, setSlotState] = React.useState<SlotState>(
-    generateSlotState()
-  );
+const initSlotState = generateSlotState();
 
-  const [playStates, setPlayStates] = React.useState<PlayState[]>(
-    registerSlotState(slotState)
-  );
+export default function SlotMachine(): React.ReactElement {
+  const [slotState, setSlotState] = React.useState<SlotState>([[], [], []]);
+
+  const [playStates, setPlayStates] = React.useState<PlayState[]>([]);
 
   React.useEffect(() => {
+    console.log(slotState);
     // setPlayStates(registerSlotState(slotState));
-  }, [slotState]);
+  }, []);
 
   function registerSlotState(slotState: SlotState) {
-    debugger;
     return playSessions.map((playSession) => {
       return playSession.registerWithPlayState(slotState);
     });
   }
+
   function resetPlayStates() {
     setPlayStates(
       playSessions.map((playSession) => {
@@ -40,10 +39,13 @@ export default function SlotMachine(): React.ReactElement {
   }
   return (
     <React.Fragment>
-      <SlotResult slotState={slotState} winState={playStates[0].lastWinState} />
+      <SlotResult
+        slotState={slotState}
+        winState={playStates[0]?.lastWinState}
+      />
       <button
         onClick={() => {
-          setSlotState(generateSlotState());
+          // setSlotState(generateSlotState());
         }}
       >
         SPIN (costs $1)
@@ -57,7 +59,7 @@ export default function SlotMachine(): React.ReactElement {
       </button>
       {playStates.map((playState) => {
         return (
-          <div>
+          <div key={playState.numAttempts}>
             <h3>Stats</h3>
             <div>Attempts: {playState.numAttempts}</div>
             <div>Total Won: {playState.winTotal}</div>
