@@ -49,7 +49,7 @@ Each spin costs the player 1$.
    Estimate if it is worth offering this slot machine as a casino. What if the payout was i \_ (s +
    0.6) $?
 
-   ![](https://i.imgur.com/alMa2Qq.png), the win amount for both strategy formulas is also listed
+   ![](https://i.imgur.com/hUsXLyK.png), the win amount for both strategy formulas is also listed
 
    4\* Bonus math:
    What is the exact value of the average payout of this slot machine?
