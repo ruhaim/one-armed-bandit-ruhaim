@@ -5,6 +5,7 @@ p {
 
 .slot-result {
   font-family: 'Courier New', Courier, monospace;
+  font-size: 200%;
 }
 .slot-result[data-is-win='true'] {
   font-weight: bold;
