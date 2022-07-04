@@ -7,6 +7,7 @@ interface PlayStateStatsProp {
 }
 export default function PlayStateStats({ playState }: PlayStateStatsProp) {
   const { numAttempts, winTotal, spinCost, lastWinState } = playState;
+
   return (
     <div>
       <h3>{playState.name} Stats</h3>
@@ -25,6 +26,10 @@ export default function PlayStateStats({ playState }: PlayStateStatsProp) {
       </div>
       <div>
         Total Profit: <CurrencyDisplay value={winTotal - numAttempts} />
+      </div>
+      <div>
+        Profit/Loss Percentage:{' '}
+        {Math.round(((winTotal - numAttempts) / numAttempts) * 10000) / 100}%
       </div>
     </div>
   );
