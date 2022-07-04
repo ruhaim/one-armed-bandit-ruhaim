@@ -18,24 +18,23 @@ export default function SlotMachine(): React.ReactElement {
   );
 
   const [playStates, setPlayStates] = React.useState<PlayState[]>(
-    registerSlotState(generateSlotState())
+    registerSlotState(slotState)
   );
 
   React.useEffect(() => {
-    setPlayStates(registerSlotState(slotState));
+    // setPlayStates(registerSlotState(slotState));
   }, [slotState]);
 
   function registerSlotState(slotState: SlotState) {
+    debugger;
     return playSessions.map((playSession) => {
-      playSession.addSlotState(slotState);
-      return playSession.playState;
+      return playSession.registerWithPlayState(slotState);
     });
   }
   function resetPlayStates() {
     setPlayStates(
       playSessions.map((playSession) => {
-        playSession.reset();
-        return playSession.playState;
+        return playSession.resetPlayState();
       })
     );
   }

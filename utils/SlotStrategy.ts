@@ -19,19 +19,21 @@ export default class PlaySession {
     this.spinCost = 1;
   }
 
-  reset() {
+  resetPlayState() {
     this.winTotal = 0;
     this.numAttempts = 0;
     this.lastWinState = undefined;
+    return this.getPlayState();
   }
 
-  addSlotState(slotState: SlotState) {
+  registerWithPlayState(slotState: SlotState) {
     this.lastWinState = getSlotWinState(slotState, this.winCalcStrategy);
     this.winTotal += this.lastWinState.winAmount;
     this.numAttempts += 1;
+    return this.getPlayState();
   }
 
-  get playState(): PlayState {
+  private getPlayState(): PlayState {
     return {
       winTotal: this.winTotal,
       numAttempts: this.numAttempts,
