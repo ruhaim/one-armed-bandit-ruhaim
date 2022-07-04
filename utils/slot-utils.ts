@@ -14,6 +14,12 @@ export interface SlotRowWinState {
   winningNum: number;
   winAmount: number;
 }
+export interface PlayState {
+  winTotal: number;
+  numAttempts: number;
+  spinCost: number;
+  lastWinState: SlotWinState;
+}
 
 export type WinCalcStrategy = (sequenceLength, winningNum) => number;
 

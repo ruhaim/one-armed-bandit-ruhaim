@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { generateSlotState, SlotState } from '../utils/slot-utils';
-import PlaySession, { PlayState } from '../utils/SlotStrategy';
+import { generateSlotState, PlayState, SlotState } from '../utils/slot-utils';
+import PlaySession from '../utils/SlotStrategy';
 import {
   slotRowAmountWinStrategy1,
   slotRowAmountWinStrategy2,
@@ -18,23 +18,18 @@ export default function SlotMachine(): React.ReactElement {
   );
 
   const [playStates, setPlayStates] = React.useState<PlayState[]>(
-    playSessions.map((playSession) => {
-      playSession.addSlotState(slotState);
-      return playSession.playState;
-    })
+    registerSlotState(generateSlotState())
   );
 
   React.useEffect(() => {
-    addSlotState(slotState);
+    setPlayStates(registerSlotState(slotState));
   }, [slotState]);
 
-  function addSlotState(slotState: SlotState) {
-    setPlayStates(
-      playSessions.map((playSession) => {
-        playSession.addSlotState(slotState);
-        return playSession.playState;
-      })
-    );
+  function registerSlotState(slotState: SlotState) {
+    return playSessions.map((playSession) => {
+      playSession.addSlotState(slotState);
+      return playSession.playState;
+    });
   }
   function resetPlayStates() {
     setPlayStates(

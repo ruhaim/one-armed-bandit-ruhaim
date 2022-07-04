@@ -1,5 +1,5 @@
-import SlotResult from '../components/SlotResult';
 import {
+  PlayState,
   SlotRowState,
   SlotRowWinState,
   SlotState,
@@ -74,11 +74,4 @@ function getSlotRowWinState(
   const winAmount = !isWin ? 0 : winStrategy(sequenceLength, winningNum);
 
   return { sequenceLength, winningNum, isWin, winAmount };
-}
-
-export interface PlayState {
-  winTotal: number;
-  numAttempts: number;
-  spinCost: number;
-  lastWinState: SlotWinState | undefined;
 }
