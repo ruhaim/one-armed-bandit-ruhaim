@@ -56,7 +56,7 @@ export default function SlotMachine(): React.ReactElement {
         Reset
       </button>
       {playStates?.map((playState) => (
-        <PlayStateStats playState={playState} />
+        <PlayStateStats playState={playState} key={playState.name} />
       ))}
     </React.Fragment>
   );
