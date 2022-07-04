@@ -11,9 +11,8 @@ export default function PlayStateStats({ playState }: PlayStateStatsProp) {
     <div>
       <h3>{playState.name} Stats</h3>
       <div>
-        This Attempt: <CurrencyDisplay value={lastWinState.winAmount} />
+        This Attempt: <CurrencyDisplay value={lastWinState?.winAmount} />
       </div>
-
       <div>
         Spin Cost: <CurrencyDisplay value={spinCost} />
       </div>
@@ -21,8 +20,12 @@ export default function PlayStateStats({ playState }: PlayStateStatsProp) {
       <div>
         Total Won: <CurrencyDisplay value={winTotal} />
       </div>
-      <div>Total Cost: {numAttempts * spinCost}</div>
-      <div>Total Profit: {winTotal - numAttempts}</div>
+      <div>
+        Total Cost: <CurrencyDisplay value={numAttempts * spinCost} />
+      </div>
+      <div>
+        Total Profit: <CurrencyDisplay value={winTotal - numAttempts} />
+      </div>
     </div>
   );
 }
