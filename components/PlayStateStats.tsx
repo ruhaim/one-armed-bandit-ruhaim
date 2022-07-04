@@ -25,7 +25,10 @@ export default function PlayStateStats({ playState }: PlayStateStatsProp) {
         Total Cost: <CurrencyDisplay value={numAttempts * spinCost} />
       </div>
       <div>
-        Total Profit: <CurrencyDisplay value={winTotal - numAttempts} />
+        Total Profit:
+        <strong>
+          <CurrencyDisplay value={winTotal - numAttempts} />
+        </strong>
       </div>
       <div>
         Profit/Loss Percentage:{' '}
