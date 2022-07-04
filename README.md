@@ -55,3 +55,9 @@ Each spin costs the player 1$.
    What is the exact value of the average payout of this slot machine?
 
    We could caclulate the average payout for 100 attempts for n number of games.
+   To compute the precice value, It could be a range calculated from the values
+
+   - minimun winnable amount
+   - maximun winnable amount
+   - % of winnable combinations of all combinations
+   - the cost per spin
