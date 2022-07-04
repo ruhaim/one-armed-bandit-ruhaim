@@ -5,5 +5,5 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 export default function CurrencyDisplay({ value }) {
-  return <span>{currencyFormatter.format(value)}</span>;
+  return <span className="curr">{currencyFormatter.format(value)}</span>;
 }

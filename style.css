@@ -13,3 +13,6 @@ p {
 .slot-result--col[data-is-win='true'] {
   color: red;
 }
+.curr{
+  font-family: 'Courier New', Courier, monospace;
+}
