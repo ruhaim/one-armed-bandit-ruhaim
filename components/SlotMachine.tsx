@@ -5,6 +5,7 @@ import {
   slotRowAmountWinStrategy1,
   slotRowAmountWinStrategy2,
 } from '../utils/win-calc-strategies';
+import PlayStateStats from './PlayStateStats';
 import SlotResult from './SlotResult';
 
 const playSessions = [
@@ -45,7 +46,7 @@ export default function SlotMachine(): React.ReactElement {
           setPlayStates(registerSlotState(slotState));
         }}
       >
-        SPIN (costs $1)
+        SPIN 🚀
       </button>
       <button
         onClick={() => {
@@ -54,19 +55,9 @@ export default function SlotMachine(): React.ReactElement {
       >
         Reset
       </button>
-      {playStates?.map((playState) => {
-        return (
-          <div>
-            <h3>Stats</h3>
-            <div>Attempts: {playState.numAttempts}</div>
-            <div>Total Won: {playState.winTotal}</div>
-            <div>Total Cost: {playState.numAttempts}</div>
-            <div>
-              Total Profit: {playState.winTotal - playState.numAttempts}
-            </div>
-          </div>
-        );
-      })}
+      {playStates?.map((playState) => (
+        <PlayStateStats playState={playState} />
+      ))}
     </React.Fragment>
   );
 }

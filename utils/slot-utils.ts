@@ -19,6 +19,7 @@ export interface PlayState {
   numAttempts: number;
   spinCost: number;
   lastWinState: SlotWinState;
+  name: string;
 }
 
 export type WinCalcStrategy = (sequenceLength, winningNum) => number;

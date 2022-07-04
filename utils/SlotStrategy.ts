@@ -13,10 +13,12 @@ export default class PlaySession {
   numAttempts: number = 0;
   spinCost: number = 1;
   lastWinState: SlotWinState | undefined;
+  name: string;
 
   constructor(winCalcStrategy: WinCalcStrategy, spinCost: number = 1) {
     this.winCalcStrategy = winCalcStrategy;
     this.spinCost = 1;
+    this.name = winCalcStrategy.name;
   }
 
   resetPlayState() {
@@ -39,6 +41,7 @@ export default class PlaySession {
       numAttempts: this.numAttempts,
       lastWinState: this.lastWinState,
       spinCost: this.spinCost,
+      name: this.name,
     };
   }
 }
