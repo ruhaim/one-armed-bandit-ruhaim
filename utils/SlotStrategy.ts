@@ -12,7 +12,7 @@ export default class PlaySession {
   winTotal: number = 0;
   numAttempts: number = 0;
   spinCost: number = 1;
-  lastSlotState: SlotWinState | undefined;
+  lastWinState: SlotWinState | undefined;
 
   constructor(winCalcStrategy: WinCalcStrategy, spinCost: number = 1) {
     this.winCalcStrategy = winCalcStrategy;
@@ -22,13 +22,22 @@ export default class PlaySession {
   reset() {
     this.winTotal = 0;
     this.numAttempts = 0;
-    this.lastSlotState = undefined;
+    this.lastWinState = undefined;
   }
 
   addSlotState(slotState: SlotState) {
-    this.lastSlotState = getSlotWinState(slotState, this.winCalcStrategy);
-    this.winTotal += this.lastSlotState.winAmount;
+    this.lastWinState = getSlotWinState(slotState, this.winCalcStrategy);
+    this.winTotal += this.lastWinState.winAmount;
     this.numAttempts += 1;
+  }
+
+  get playState(): PlayState {
+    return {
+      winTotal: this.winTotal,
+      numAttempts: this.numAttempts,
+      lastWinState: this.lastWinState,
+      spinCost: this.spinCost,
+    };
   }
 }
 
@@ -65,4 +74,11 @@ function getSlotRowWinState(
   const winAmount = !isWin ? 0 : winStrategy(sequenceLength, winningNum);
 
   return { sequenceLength, winningNum, isWin, winAmount };
+}
+
+export interface PlayState {
+  winTotal: number;
+  numAttempts: number;
+  spinCost: number;
+  lastWinState: SlotWinState | undefined;
 }
