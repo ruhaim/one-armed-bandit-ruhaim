@@ -1,39 +1,38 @@
 import SlotResult from '../components/SlotResult';
+import {
+  SlotRowState,
+  SlotRowWinState,
+  SlotState,
+  SlotWinState,
+  WinCalcStrategy,
+} from './slot-utils';
 
-export type SlotState = SlotRowState[];
-export type SlotRowState = number[];
+export default class PlaySession {
+  winCalcStrategy: WinCalcStrategy;
+  winTotal: number = 0;
+  numAttempts: number = 0;
+  spinCost: number = 1;
+  lastSlotState: SlotWinState | undefined;
 
-export interface SlotWinState {
-  isWin: boolean;
-  rowWinState: SlotRowWinState[];
-  winAmount: number;
+  constructor(winCalcStrategy: WinCalcStrategy, spinCost: number = 1) {
+    this.winCalcStrategy = winCalcStrategy;
+    this.spinCost = 1;
+  }
+
+  reset() {
+    this.winTotal = 0;
+    this.numAttempts = 0;
+    this.lastSlotState = undefined;
+  }
+
+  addSlotState(slotState: SlotState) {
+    this.lastSlotState = getSlotWinState(slotState, this.winCalcStrategy);
+    this.winTotal += this.lastSlotState.winAmount;
+    this.numAttempts += 1;
+  }
 }
-export interface SlotRowWinState {
-  isWin: boolean;
-  sequenceLength?: number;
-  winningNum: number;
-  winAmount: number;
-}
 
-export type WinCalcStrategy = (sequenceLength, winningNum) => number;
-
-export function generateSlotState(): SlotState {
-  const numRows = 3;
-  const numCols = 5;
-  const arr = Array(numRows)
-    .fill([])
-    .map(() => Array(numCols).fill(0).map(getRandomSlot));
-  return arr;
-}
-
-export function getRandomSlot(): number {
-  return Math.floor(Math.random() * 5);
-}
-
-
-
-
-export function getSlotWinState(
+function getSlotWinState(
   state: SlotState,
   winStrategy: WinCalcStrategy
 ): SlotWinState {

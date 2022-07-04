@@ -5,13 +5,17 @@ import {
   SlotState,
   SlotWinState,
 } from '../utils/slot-utils';
+import PlaySession from '../utils/SlotStrategy';
 import {
   slotRowAmountWinStrategy1,
   slotRowAmountWinStrategy2,
 } from '../utils/win-calc-strategies';
 import SlotResult from './SlotResult';
 
-const calcStrategies = [slotRowAmountWinStrategy1, slotRowAmountWinStrategy2];
+const platSessions = [
+  new PlaySession(slotRowAmountWinStrategy1),
+  new PlaySession(slotRowAmountWinStrategy2),
+];
 
 export default function SlotMachine(): React.ReactElement {
   const [slotState, setSlotState] = React.useState<SlotState>(
@@ -19,11 +23,11 @@ export default function SlotMachine(): React.ReactElement {
   );
 
   const [slotWinStates, setSlotWinStates] = React.useState<SlotWinState[]>(
-    calcStrategies.map((strategy) => getSlotWinState(slotState, strategy))
+    platSessions.map((playSession) => playSession.addSlotState(slotState))
   );
   const [numAttempts, setNumAttempts] = React.useState(0);
   const [winAmountSums, setWinAmountSums] = React.useState<number[]>(
-    calcStrategies.map(() => 0)
+    platSessions.map(() => 0)
   );
 
   React.useEffect(() => {
@@ -54,7 +58,7 @@ export default function SlotMachine(): React.ReactElement {
         Reset
       </button>
       <div>
-        Stats
+        <h3>Stats</h3>
         <div>Attempts: {numAttempts}</div>
         <div>Total Won: {winAmountSums}</div>
         <div>Total Cost: {numAttempts}</div>

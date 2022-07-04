@@ -26,10 +26,6 @@ export default function SlotResult({ slotState, winState }: SlotResultProps) {
           </div>
         );
       })}
-
-      <div>
-        You Won: <CurrencyDisplay value={winState.winAmount} />
-      </div>
     </div>
   );
 }
